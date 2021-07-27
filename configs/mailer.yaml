@@ -1,0 +1,56 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  mailer:
+    class: Symfony\Component\Mailer\Mailer
+    arguments: ['@mailer.transports', ~, '@event_dispatcher']
+
+  mailer_debug:
+    class: Symfony\Component\Mailer\Mailer
+    arguments: ['@mailer.transport_factory.filesystem', ~, '@event_dispatcher']
+
+  Symfony\Component\Mailer\MailerInterface: '@mailer'
+
+  mailer.transport_factory:
+    class: Symfony\Component\Mailer\Transport
+    arguments: [!tagged { tag: mailer.transport_factory }]
+
+  mailer.transports:
+    class: Symfony\Component\Mailer\Transport\Transports
+    factory: ['@mailer.transport_factory', 'fromStrings']
+    arguments:
+      - [ '%mailer_dsn%' ]
+
+  mailer.default_transport:
+    class: Symfony\Component\Mailer\Transport\TransportInterface
+    factory: ['@mailer.transport_factory', 'fromString']
+    arguments: ['%mailer_dsn%']
+
+  Symfony\Component\Mailer\Transport\TransportInterface: '@mailer.default_transport'
+
+  mailer.messenger.message_handler:
+    class: Symfony\Component\Mailer\Messenger\MessageHandler
+    arguments: ['@mailer.transports']
+    tags:
+      - { name: messenger.message_handler }
+
+  mailer.envelope_listener:
+    class: Symfony\Component\Mailer\EventListener\EnvelopeListener
+    tags:
+      - { name: kernel.event_subscribe }
+
+  mailer.logger_message_listener:
+    class: Symfony\Component\Mailer\EventListener\MessageLoggerListener
+    tags:
+      - { name: kernel.event_subscriber }
+      - { name: kernel.reset, method: reset }
+
+  mailer.transport_factory.abstract:
+    class: Symfony\Component\Mailer\Transport\AbstractTransportFactory
+    abstract: true
+    arguments:
+      - '@event_dispatcher'
+      - '@http_client'

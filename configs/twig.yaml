@@ -1,0 +1,29 @@
+#######
+# Twig
+#######
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: true
+
+  # Twig loader
+  twig.loader:
+    class: Twig\Loader\FilesystemLoader
+    arguments:
+      - '%twig_paths%'
+
+  # Twig
+  twig:
+    class: Proklung\Notifier\Twig\TwigInitializer
+    arguments:
+      - '@twig.loader'
+      - '%kernel.debug%'
+      - '%twig_cache_dir%'
+      - '%twig_config%'
+
+  # Экземпляр Twig.
+  twig.instance:
+    class: Twig\Environment
+    factory: ['@twig', 'instance']

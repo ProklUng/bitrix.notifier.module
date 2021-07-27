@@ -1,0 +1,5 @@
+.idea
+/vendor/
+vendor/
+composer.lock
+*.php.meta

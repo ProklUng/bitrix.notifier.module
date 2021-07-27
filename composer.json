@@ -1,0 +1,55 @@
+{
+  "name": "proklung/bitrix.notifier.module",
+  "description": "Интеграция компонента Symfony Notifier в Битрикс",
+  "type": "bitrix-d7-module",
+  "keywords": [
+    "bitrix",
+    "bitrix-module",
+    "bitrix-cms",
+    "bitrix-d7",
+    "symfony",
+    "bitrix-symfony",
+    "notifier"
+  ],
+  "homepage": "https://github.com/ProklUng/bitrix.notifier.module",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Gavrilov Fedy",
+      "email": "fedor.gavrilov.75@mail.ru"
+    }
+  ],
+
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/proklung/bitrix.containerable.boilerplate"
+    }
+  ],
+
+  "support": {
+    "issues": "https://github.com/ProklUng/bitrix.notifier.module/issues",
+    "source": "https://github.com/ProklUng/bitrix.notifier.module"
+  },
+  "extra": {
+    "installer-name": "proklung.notifier"
+  },
+  "require": {
+    "php": ">=7.1 || ^8.0",
+    "composer/installers": "~1",
+    "symfony/notifier": "^5",
+    "symfony/http-foundation": "^4.4 || ^5",
+    "symfony/event-dispatcher": "^4.4 || ^5",
+    "symfony/mailer": "^4.4 || ^5.0",
+    "symfony/google-mailer": "^4.4 || ^5.0",
+    "symfony/mime": "^4.4 || ^5.0",
+    "symfony/monolog-bridge": "^5",
+    "twig/twig": "~1 | ~2",
+    "proklung/bitrix-containerable-boilerplate": "^1.0",
+    "proklung/bitrix.module.boilerplate": "^1.0",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "icanhazstring/composer-unused": "^0.7.5"
+  }
+}
