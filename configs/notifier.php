@@ -3,9 +3,12 @@
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Proklung\Notifier\Email\CustomEmailChannel;
+use Proklung\Notifier\Session\SessionInitializator;
 use Symfony\Bridge\Monolog\Handler\NotifierHandler;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Notifier\Channel\BrowserChannel;
 use Symfony\Component\Notifier\Channel\ChannelPolicy;
@@ -52,8 +55,19 @@ return static function (ContainerConfigurator $container) {
     }
 
     $container->services()
+        ->set('session_migrator', SessionInitializator::class)
+
+        ->set('session_instance', SessionInterface::class)
+        ->public()
+        ->factory([service('session_migrator'), 'session'])
+
         ->set('request_stack', RequestStack::class)
+        ->call('push', [service('module_request')])
         ->set('event_dispatcher', EventDispatcher::class)
+
+        ->set('module_request', Request::class)
+        ->factory([Request::class, 'createFromGlobals'])
+        ->call('setSession', [service('session_instance')])
 
         ->set('notifier', Notifier::class)
             ->args([tagged_locator('notifier.channel', 'channel'), service('notifier.channel_policy')->ignoreOnInvalid()])
