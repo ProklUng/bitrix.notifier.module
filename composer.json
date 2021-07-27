@@ -44,7 +44,8 @@
     "symfony/google-mailer": "^4.4 || ^5.0",
     "symfony/mime": "^4.4 || ^5.0",
     "symfony/monolog-bridge": "^5",
-    "twig/twig": "~1 | ~2",
+    "twig/twig": "~1 || ~2",
+    "symfony/twig-bridge": "^4.4 || ^5",
     "proklung/bitrix-containerable-boilerplate": "^1.0",
     "proklung/bitrix.module.boilerplate": "^1.0",
     "ext-json": "*"

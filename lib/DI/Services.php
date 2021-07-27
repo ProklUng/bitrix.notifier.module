@@ -154,7 +154,7 @@ class Services extends AbstractServiceContainer
 
             $defaultSender = $configMailer['envelope']['sender'] ?? '';
             if (!$defaultSender) {
-                // ToDo
+                $defaultSender = \COption::GetOptionString('main', 'email_from');
             }
 
             static::$container->setParameter(

@@ -4,54 +4,17 @@ services:
     autoconfigure: true
     public: true
 
-  # Транспорт - запись писем в файл.
-  custom_mailer_transports.filesystem:
-    class: Symfony\Component\Mailer\Transport\TransportInterface
-    factory: '@Prokl\CustomFrameworkExtensionsBundle\Services\Mailer\Factory\TransportFactory'
-    arguments:
-      - '%mailer_dsn_file%'
-      - '@mailer.filesystem'
-      - '@event_dispatcher'
-      - '@http_client'
-
   # Сервис-обертка отправки писем.
   custom_mail_sender:
-    class: Prokl\CustomFrameworkExtensionsBundle\Services\Mailer\EmailService
+    class: Proklung\Notifier\Email\CustomMailer
     arguments:
       - '@mailer'
       - '@Symfony\Bridge\Twig\Mime\BodyRenderer'
 
-  Prokl\CustomFrameworkExtensionsBundle\Services\Mailer\EmailService: '@custom_mail_sender'
+  Proklung\Notifier\Email\CustomMailer: '@custom_mail_sender'
 
   Symfony\Bridge\Twig\Mime\BodyRenderer:
     class: Symfony\Bridge\Twig\Mime\BodyRenderer
     arguments: ['@twig.instance']
 
   Symfony\Component\Mime\BodyRendererInterface: '@Symfony\Bridge\Twig\Mime\BodyRenderer'
-
-  # Кастомная фабрика транспортов.
-  Prokl\CustomFrameworkExtensionsBundle\Services\Mailer\Factory\TransportFactory:
-    arguments:
-      - '%kernel.project_dir%'
-
-  # Тестовый сервис отправки почты через MailerMessageFactory
-  mailer_bundle.send_email_via_factory:
-    class: Prokl\CustomFrameworkExtensionsBundle\Services\Mailer\Factory\MailerMessageFactory
-    arguments:
-      $documentRoot: '%kernel.project_dir%'
-      $defaultSettings:
-        from: '%mailer_default_email_from%'
-        cc: []
-        bcc: []
-        replyTo: '%mailer_default_email_from%'
-        headers: []
-
-
-  ################
-  # Listeners
-  ################
-
-  Prokl\CustomFrameworkExtensionsBundle\Services\Mailer\Events\SetFromListener:
-    arguments: ['%mailer_default_email_from%', '%mailer_default_title%']
-    tags:
-      - { name: kernel.event_subscriber }
