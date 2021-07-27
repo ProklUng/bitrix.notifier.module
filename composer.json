@@ -1,5 +1,5 @@
 {
-  "name": "proklung/bitrix.notifier.module",
+  "name": "proklung/bitrix-notifier-module",
   "description": "Интеграция компонента Symfony Notifier в Битрикс",
   "type": "bitrix-d7-module",
   "keywords": [
