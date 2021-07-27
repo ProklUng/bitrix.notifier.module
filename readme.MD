@@ -76,7 +76,7 @@ $sms = new SmsMessage(
 $sentMessage = $texter->send($sms);
 ```
 
-Отправить email:
+Отправить email (NB: сейчас все настроено под отправку через Gmail; SMTP не тестировал):
 
 ```php
 use Symfony\Component\Notifier\Notification\Notification;
