@@ -117,6 +117,11 @@ return [
   'proklung.notifier' => [
           'value' => [
               'notifier' => [
+                  // https://symfony.com/doc/current/notifier.html#configuring-channel-policies
+                 'channel_policy' => [
+                     'high' => ['chat'],
+                     'medium' => ['email']
+                  ],
                   'chatter_transports' => [
                       'telegram' => 'telegram://315114113:AAFjvQlEiaWisZsav_YQfwmhEIIP9PFw3Ss@default?channel=-1001595706876',
                   ],
@@ -158,6 +163,8 @@ return [
       ]
 ];
 ```
+
+В параметрах поодерживаются и такие штуки, как `'%env(TELEGRAM_DSN)%'` (отсылка к переменной окружения `TELEGRAM_DSN`)
 
 ## Кэширование контейнера
 
