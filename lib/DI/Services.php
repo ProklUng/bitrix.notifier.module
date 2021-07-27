@@ -161,6 +161,10 @@ class Services extends AbstractServiceContainer
                 'default_sender_email',
                 $defaultSender
             );
+        } else { // Enabled = false или отсутствует
+            if (static::$container->hasDefinition('notifier.channel.email')) {
+                static::$container->removeDefinition('notifier.channel.email');
+            }
         }
 
         $this->registerNotifierConfiguration($config, static::$container);
@@ -211,6 +215,8 @@ class Services extends AbstractServiceContainer
     }
 
     /**
+     * Autowiring.
+     *
      * @param ContainerBuilder $container Контейнер.
      *
      * @return void
@@ -246,6 +252,8 @@ class Services extends AbstractServiceContainer
     }
 
     /**
+     * Конфигурирование Notifier.
+     *
      * @param array            $config    Конфиг.
      * @param ContainerBuilder $container Контейнер.
      *
@@ -290,6 +298,14 @@ class Services extends AbstractServiceContainer
         }
     }
 
+    /**
+     * Конфигурирование мэйлера.
+     *
+     * @param array            $config    Конфиг.
+     * @param ContainerBuilder $container Контейнер.
+     *
+     * @return void
+     */
     private function registerMailerConfiguration(array $config, ContainerBuilder $container)
     {
         if (!\count($config['transports']) && null === $config['dsn']) {
