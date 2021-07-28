@@ -62,6 +62,7 @@ class EventBridge
         $messageDb = EventMessageTable::getList([
             'select' => ['ID'],
             'filter' => [
+                '=ACTIVE' => 'Y',
                 '=EVENT_NAME' => $codeEvent,
                 '=EVENT_MESSAGE_SITE.SITE_ID' => $arSites,
             ],

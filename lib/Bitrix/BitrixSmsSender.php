@@ -58,8 +58,8 @@ class BitrixSmsSender
     /**
      * Отправить сообщение.
      *
-     * @param string      $codeEvent  Код события.
-     * @param array       $arFields   Параметры события.
+     * @param string $codeEvent Код события.
+     * @param array  $arFields  Параметры события.
      *
      * @return void
      * @throws ArgumentException | ObjectPropertyException | SystemException Битриксовые ошибки.

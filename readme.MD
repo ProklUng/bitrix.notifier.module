@@ -146,7 +146,6 @@ return [
               'mailer' => [
                       'enabled' => true,
                       'dsn' => 'gmail+smtp://robotivanov2020:izjqfjyegwmznrtb@default',
-                      'dsn_file' => 'file:///upload/emails/{Y}/{m}/{d}/@hash.eml',
                       'envelope' => [
                           'recipients' => ['testing@mail.ru'],
                            // Поле from отправляемого письма 
@@ -202,12 +201,7 @@ return [
 
         // Будет оправлено сообщение в канал email и сделана запись в таблице b_event.
         $bitrixEventHandler->send('CODE_MAIL_EVENT', $arFields);
-
-        // Будет оправлено сообщение в канал согласно логике channel_policy
-        $bitrixEventHandler->send('CODE_MAIL_EVENT', $arFields, Notification::IMPORTANCE_MEDIUM);
 ```
-
-Ограничение: механизм отправляет все письма, как html, игнорируя настройки битриксового почтового шаблона.
 
 Ошибки отправки не глушатся. Если что-то пойдет не так, то выбросится исключение.
 
