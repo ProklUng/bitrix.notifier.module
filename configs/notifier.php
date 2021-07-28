@@ -63,6 +63,8 @@ return static function (ContainerConfigurator $container) {
 
         ->set('request_stack', RequestStack::class)
         ->call('push', [service('module_request')])
+        ->public()
+
         ->set('event_dispatcher', EventDispatcher::class)
 
         ->set('module_request', Request::class)

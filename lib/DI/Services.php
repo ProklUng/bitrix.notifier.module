@@ -15,6 +15,8 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Mailer\Bridge\Google\Transport\GmailTransportFactory;
 use Symfony\Component\Mailer\Mailer;
 use Symfony\Component\Notifier\Recipient\Recipient;
@@ -174,6 +176,21 @@ class Services extends AbstractServiceContainer
         $this->build(static::$container);
 
         static::$container->compile(true);
+    }
+
+    /**
+     * Flashes.
+     *
+     * @return FlashBagInterface
+     * @throws Exception
+     */
+    public static function getFlashBag() : FlashBagInterface
+    {
+        $container = static::getInstance();
+        /** @var Session $session */
+        $session = $container->get('session_instance');
+
+        return $session->getFlashBag();
     }
 
     /**
