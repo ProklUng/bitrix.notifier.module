@@ -45,17 +45,22 @@ class CustomEmailMessage implements MessageInterface
     /**
      * @param Notification            $notification
      * @param EmailRecipientInterface $recipient
-     * @param string                  $from         Поле from из конфига.
+     * @param string|null             $from         Поле from из конфига.
      *
      * @return static
      */
     public static function fromNotification(
         Notification $notification,
         EmailRecipientInterface $recipient,
-        string $from
+        ?string $from = null
     ): self {
         if ('' === $recipient->getEmail()) {
             throw new InvalidArgumentException(sprintf('"%s" needs an email, it cannot be empty.', __CLASS__));
+        }
+
+        // Если не передали поле from снаружи, то берем из EmailRecipientInterface
+        if (!$from) {
+            $from = $recipient->getEmail();
         }
 
         $content = $notification->getContent() ?: $notification->getSubject();

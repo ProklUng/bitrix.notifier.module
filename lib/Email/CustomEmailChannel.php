@@ -75,7 +75,7 @@ class CustomEmailChannel implements ChannelInterface
             $message = $notification->asEmailMessage($recipient, $transportName);
         }
 
-        $message = $message ?: CustomEmailMessage::fromNotification($notification, $recipient, (string)$this->from);
+        $message = $message ?: CustomEmailMessage::fromNotification($notification, $recipient, $this->from);
         $email = $message->getMessage();
         if ($email instanceof Email) {
             if (!$email->getFrom()) {
