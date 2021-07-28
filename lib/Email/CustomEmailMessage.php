@@ -77,8 +77,7 @@ class CustomEmailMessage implements MessageInterface
                 ->from($from)
                 ->to($recipient->getEmail())
                 ->subject($notification->getSubject())
-                ->htmlTemplate($content)
-                ->text($content)
+                ->html($content)
             ;
 
             if ($exception = $notification->getException()) {
