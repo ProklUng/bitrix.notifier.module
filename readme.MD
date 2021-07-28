@@ -179,9 +179,25 @@ return [
 
 ## Прочее
 
-#### FlashBag
+### FlashBag
 
 Для обработки отправок в канал `browser`. Два варианта:
 
 - публичный сервис `session_instance` вернет экземпляр сессии, а там есть метод `getFlashBag`.
 - хэлпер `\Proklung\Notifier\DI\Services::getFlashBag()`, делающий тоже самое.
+
+### Использование битриксовых почтовых событий и их шаблонов
+
+```php
+        use Proklung\Notifier\Bitrix\BitrixMailEventSender;
+
+        $bitrixEventHandler = BitrixMailEventSender::getInstance(
+            \Proklung\Notifier\DI\Services::getInstance()->get('notifier')
+        );
+
+        // Массив, идентичный с параметром fields при отправке Битриксом сообщений
+        // См. https://dev.1c-bitrix.ru/api_help/main/reference/cevent/send.php 
+        $arFields = ['NAME' => 'testing email', 'EMAIL' => 'recipitient@gmail.com'];
+
+        $bitrixEventHandler->send('CODE_MAIL_EVENT', $arFields);
+```

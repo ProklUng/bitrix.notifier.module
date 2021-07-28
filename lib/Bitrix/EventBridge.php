@@ -24,9 +24,9 @@ class EventBridge
      * @param array     $context   Значения полей ($arFields).
      * @param array     $sites     ID сайтов.
      *
-     * @return mixed
+     * @return array
      */
-    public function compileMessage(EventInfo $eventInfo, array $context, array $sites = [])
+    public function compileMessage(EventInfo $eventInfo, array $context, array $sites = []) : array
     {
         $message = EventMessageCompiler::createInstance([
             'EVENT' => $eventInfo->getEventCode(),
@@ -37,7 +37,11 @@ class EventBridge
         ]);
         $message->compile();
 
-        return $message->getMailBody();
+        return ['body' => $message->getMailBody(),
+            'mail_to' => $message->getMailTo(),
+            'charset' => $message->getMailCharset(),
+            'subject' => $message->getMailSubject(),
+        ];
     }
 
     /**
@@ -48,7 +52,7 @@ class EventBridge
      *
      * @throws ArgumentException | ObjectPropertyException | SystemException Битриксовые ошибки.
      */
-    public function getMessageTemplate(string $codeEvent, array $sites = [])
+    public function getMessageTemplate(string $codeEvent, array $sites = []) : array
     {
         $arSites = ['s1'];
         if (count($sites) > 0) {
