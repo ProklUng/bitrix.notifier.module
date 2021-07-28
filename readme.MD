@@ -226,3 +226,25 @@ return [
 
 Ошибки отправки глушатся. Если что-то с доставкой SMS пойдет не так, то будет тихо, но в таблице `b_event`
 появится запись с признаком неудачи и текстом ошибки.
+
+### Отправка битриксовых почтовых шаблонов в Телеграм
+
+```php
+        use Proklung\Notifier\Bitrix\BitrixTelegramEventSender;
+
+        $bitrixEventHandler = BitrixTelegramEventSender::getInstance(
+            \Proklung\Notifier\DI\Services::getInstance()->get('chatter')
+        );
+
+        $arFields = ['CODE' => '2222', 'LINK' => 'http://site.loc/'];
+
+        $bitrixEventHandler->send('TEST_EVENT', $arFields);
+```
+
+Должен быть установлен `symfony/telegram-notifier` и зарегистрирован транспорт `telegram` в секции `chatter_transports`
+файла `/bitrix/.settings.php`.
+
+Нюанс:
+
+- Telegram плохо переваривает html (даже в режиме `parse_mode = html`). Посему рекомендуется оформлять шаблоны 
+в `markdown` разметке.
