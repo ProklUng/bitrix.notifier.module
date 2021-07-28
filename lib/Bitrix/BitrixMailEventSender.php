@@ -52,21 +52,29 @@ class BitrixMailEventSender
     }
 
     /**
-     * @param string $codeEvent Код события.
-     * @param array  $arFields  Параметры события.
+     * Отправить сообщение.
+     *
+     * @param string      $codeEvent  Код события.
+     * @param array       $arFields   Параметры события.
+     * @param string|null $importance Важность сообщения (в понимании Notifier).
      *
      * @return void
      * @throws ArgumentException | ObjectPropertyException | SystemException Битриксовые ошибки.
      */
-    public function send(string $codeEvent, array $arFields) : void
+    public function send(string $codeEvent, array $arFields, ?string $importance = null) : void
     {
         $eventsInfo = $this->eventBridge->getMessageTemplate($codeEvent);
         foreach ($eventsInfo as $eventInfo) {
             $compileData = $this->eventBridge->compileMessage($eventInfo, $arFields, ['s1']);
 
-            $notification = (new Notification($compileData['subject']))
-                ->content($compileData['body'])
-                ->importance(Notification::IMPORTANCE_MEDIUM);
+            if ($importance !== null) {
+                $notification = (new Notification($compileData['subject']))
+                    ->content($compileData['body'])
+                    ->importance($importance);
+            } else {
+                $notification = (new Notification($compileData['subject'], ['email']))
+                    ->content($compileData['body']);
+            }
 
             $recipient = new Recipient($compileData['mail_to']);
 

@@ -190,6 +190,7 @@ return [
 
 ```php
         use Proklung\Notifier\Bitrix\BitrixMailEventSender;
+        use Symfony\Component\Notifier\Notification\Notification;
 
         $bitrixEventHandler = BitrixMailEventSender::getInstance(
             \Proklung\Notifier\DI\Services::getInstance()->get('notifier')
@@ -199,7 +200,11 @@ return [
         // См. https://dev.1c-bitrix.ru/api_help/main/reference/cevent/send.php 
         $arFields = ['NAME' => 'testing email', 'EMAIL' => 'recipitient@gmail.com'];
 
+        // Будет оправлено сообщение в канал email
         $bitrixEventHandler->send('CODE_MAIL_EVENT', $arFields);
+
+        // Будет оправлено сообщение в канал согласно логике channel_policy
+        $bitrixEventHandler->send('CODE_MAIL_EVENT', $arFields, Notification::IMPORTANCE_MEDIUM);
 ```
 
 Ограничение: механизм отправляет все письма, как html, игнорируя настройки битриксового почтового шаблона.
