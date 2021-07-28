@@ -200,7 +200,7 @@ return [
         // См. https://dev.1c-bitrix.ru/api_help/main/reference/cevent/send.php 
         $arFields = ['NAME' => 'testing email', 'EMAIL' => 'recipitient@gmail.com'];
 
-        // Будет оправлено сообщение в канал email
+        // Будет оправлено сообщение в канал email и сделана запись в таблице b_event.
         $bitrixEventHandler->send('CODE_MAIL_EVENT', $arFields);
 
         // Будет оправлено сообщение в канал согласно логике channel_policy
@@ -208,3 +208,27 @@ return [
 ```
 
 Ограничение: механизм отправляет все письма, как html, игнорируя настройки битриксового почтового шаблона.
+
+Ошибки отправки не глушатся. Если что-то пойдет не так, то выбросится исключение.
+
+### Использование битриксовых SMS событий и их шаблонов
+
+```php
+        use Proklung\Notifier\Bitrix\BitrixSmsSender;
+
+        $bitrixEventHandler = BitrixSmsSender::getInstance(
+            \Proklung\Notifier\DI\Services::getInstance()->get('texter')
+        );
+
+        // Массив, идентичный с параметром fields при отправке Битриксом сообщений
+        $arFields = [
+                'SENDER' => 'test', 'RECEIVER' => '+7926111111', 
+                'USER_PHONE' => '+7926111111', 'CODE' => '123'
+        ];
+
+        // Будет оправлено SMS и сделана запись в таблице b_event.
+        $bitrixEventHandler->send('SMS_USER_RESTORE_PASSWORD', $arFields);
+```
+
+Ошибки отправки глушатся. Если что-то с доставкой SMS пойдет не так, то будет тихо, но в таблице `b_event`
+появится запись с признаком неудачи и текстом ошибки.

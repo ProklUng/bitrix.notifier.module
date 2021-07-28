@@ -70,14 +70,14 @@ class EventInfo
         array $arMessage
     ) {
         $this->id = $arMessage['ID'];
-        $this->eventCode = $arMessage['EVENT_NAME'];
-        $this->active = $arMessage['ACTIVE'];
-        $this->siteId = $arMessage['LID'];
-        $this->emailFrom = $arMessage['EMAIL_FROM'];
-        $this->emailTo = $arMessage['EMAIL_TO'];
-        $this->subject = $arMessage['SUBJECT'];
-        $this->message = $arMessage['MESSAGE'];
-        $this->files = $arMessage['FILES'];
+        $this->eventCode = $arMessage['EVENT_NAME'] ?? '';
+        $this->active = $arMessage['ACTIVE'] ?? '';
+        $this->siteId = $arMessage['LID'] ?? '';
+        $this->emailFrom = $arMessage['EMAIL_FROM'] ?? '';
+        $this->emailTo = $arMessage['EMAIL_TO'] ?? '';
+        $this->subject = $arMessage['SUBJECT'] ?? '';
+        $this->message = $arMessage['MESSAGE'] ?? '';
+        $this->files = $arMessage['FILES'] ?? [];
         $this->arMessage = $arMessage;
     }
 

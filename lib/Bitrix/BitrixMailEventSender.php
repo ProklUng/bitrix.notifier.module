@@ -3,8 +3,10 @@
 namespace Proklung\Notifier\Bitrix;
 
 use Bitrix\Main\ArgumentException;
+use Bitrix\Main\Mail\Internal\EventTable;
 use Bitrix\Main\ObjectPropertyException;
 use Bitrix\Main\SystemException;
+use Exception;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
@@ -79,6 +81,25 @@ class BitrixMailEventSender
             $recipient = new Recipient($compileData['mail_to']);
 
             $this->notifier->send($notification, $recipient);
+
+            // Эмуляция поведения Битрикса при обработке событий.
+            try {
+                EventTable::add(
+                    [
+                        'EVENT_NAME' => $eventInfo->getEventCode(),
+                        'SUCCESS_EXEC' => 'Y',
+                        'MESSAGE_ID' => 99999, // Признак, что отправлено через Notifier
+                        'DUPLICATE' => 'N',
+                        'LID' => SITE_ID,
+                        'LANGUAGE_ID' => LANGUAGE_ID,
+                        'DATE_INSERT' => new \Bitrix\Main\Type\DateTime,
+                        'DATE_EXEC' => new \Bitrix\Main\Type\DateTime,
+                        'C_FIELDS' => $eventInfo->getMessageData(),
+                    ]
+                );
+            } catch (Exception $e) {
+                // Silence. Не самый важный момент.
+            }
         }
     }
 }
