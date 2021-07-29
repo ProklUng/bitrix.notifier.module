@@ -2,17 +2,14 @@
 
 namespace Proklung\Notifier\Bitrix\Sender;
 
-use Bitrix\Main\ArgumentException;
-use Bitrix\Main\ObjectPropertyException;
-use Bitrix\Main\SystemException;
 use League\HTMLToMarkdown\HtmlConverter;
+use Proklung\Notifier\Bitrix\Contract\BitrixNotifierSenderInterface;
 use Proklung\Notifier\Bitrix\EventBridgeMail;
 use Proklung\Notifier\Bitrix\Utils\EventTableUpdater;
 use RuntimeException;
 use Symfony\Component\Notifier\Bridge\Telegram\TelegramOptions;
 use Symfony\Component\Notifier\Bridge\Telegram\TelegramTransport;
 use Symfony\Component\Notifier\ChatterInterface;
-use Symfony\Component\Notifier\Exception\TransportExceptionInterface;
 use Symfony\Component\Notifier\Message\ChatMessage;
 
 /**
@@ -21,7 +18,7 @@ use Symfony\Component\Notifier\Message\ChatMessage;
  *
  * @since 28.07.2021
  */
-class BitrixTelegramEventSender
+class BitrixTelegramEventSender implements BitrixNotifierSenderInterface
 {
     /**
      * @var EventBridgeMail $eventBridge Обработка битриксовых данных события.
@@ -69,14 +66,7 @@ class BitrixTelegramEventSender
     }
 
     /**
-     * Отправить сообщение.
-     *
-     * @param string $codeEvent Код события.
-     * @param array  $arFields  Параметры события.
-     *
-     * @return void
-     * @throws ArgumentException | ObjectPropertyException | SystemException Битриксовые ошибки.
-     * @throws TransportExceptionInterface                                   Ошибки транспорта.
+     * @inheritdoc
      */
     public function send(string $codeEvent, array $arFields) : void
     {

@@ -2,7 +2,9 @@
 
 namespace Proklung\Notifier\Bitrix\Sender;
 
-use Proklung\Notifier\Bitrix\Contract\BitrixNotifierSenderInterface;
+use Bitrix\Main\ArgumentException;
+use Bitrix\Main\ObjectPropertyException;
+use Bitrix\Main\SystemException;
 use Proklung\Notifier\Bitrix\EventBridgeMail;
 use Proklung\Notifier\Bitrix\Utils\EventTableUpdater;
 use Symfony\Component\Notifier\Notification\Notification;
@@ -10,12 +12,12 @@ use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 
 /**
- * Class BitrixMailEventSender
+ * Class BitrixPolicySender
  * @package Proklung\Notifier\Bitrix\Sender
  *
- * @since 28.07.2021
+ * @since 29.07.2021
  */
-class BitrixMailEventSender implements BitrixNotifierSenderInterface
+class BitrixPolicySender
 {
     /**
      * @var EventBridgeMail $eventBridge Обработка битриксовых данных события.
@@ -52,16 +54,24 @@ class BitrixMailEventSender implements BitrixNotifierSenderInterface
     }
 
     /**
-     * @inheritdoc
+     * Отправить сообщение.
+     *
+     * @param string $codeEvent  Код события.
+     * @param array  $arFields   Параметры события.
+     * @param string $importance Важность сообщения (в понимании Notifier).
+     *
+     * @return void
+     * @throws ArgumentException | ObjectPropertyException | SystemException Битриксовые ошибки.
      */
-    public function send(string $codeEvent, array $arFields) : void
+    public function send(string $codeEvent, array $arFields, string $importance) : void
     {
         $eventsInfo = $this->eventBridge->getMessageTemplate($codeEvent);
         foreach ($eventsInfo as $eventInfo) {
             $compileData = $this->eventBridge->compileMessage($eventInfo, $arFields, ['s1']);
 
-            $notification = (new Notification($compileData['subject'], ['email']))
-                ->content($compileData['body']);
+            $notification = (new Notification($compileData['subject']))
+                ->content($compileData['body'])
+                ->importance($importance);
 
             $recipient = new Recipient($compileData['mail_to']);
 

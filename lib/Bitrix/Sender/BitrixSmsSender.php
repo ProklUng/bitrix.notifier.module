@@ -2,14 +2,11 @@
 
 namespace Proklung\Notifier\Bitrix\Sender;
 
-use Bitrix\Main\ArgumentException;
-use Bitrix\Main\ObjectPropertyException;
-use Bitrix\Main\SystemException;
 use Exception;
+use Proklung\Notifier\Bitrix\Contract\BitrixNotifierSenderInterface;
 use Proklung\Notifier\Bitrix\EventBridgeSms;
 use Proklung\Notifier\Bitrix\Utils\EventTableUpdater;
 use RuntimeException;
-use Symfony\Component\Notifier\Exception\TransportExceptionInterface;
 use Symfony\Component\Notifier\Message\SmsMessage;
 use Symfony\Component\Notifier\TexterInterface;
 
@@ -19,7 +16,7 @@ use Symfony\Component\Notifier\TexterInterface;
  *
  * @since 28.07.2021
  */
-class BitrixSmsSender
+class BitrixSmsSender implements BitrixNotifierSenderInterface
 {
     /**
      * @var EventBridgeSms $eventBridge Обработка битриксовых данных события SMS.
@@ -56,14 +53,7 @@ class BitrixSmsSender
     }
 
     /**
-     * Отправить сообщение.
-     *
-     * @param string $codeEvent Код события.
-     * @param array  $arFields  Параметры события.
-     *
-     * @return void
-     * @throws ArgumentException | ObjectPropertyException | SystemException Битриксовые ошибки.
-     * @throws TransportExceptionInterface                                   Ошибки транспорта SMS.
+     * @inheritdoc
      */
     public function send(string $codeEvent, array $arFields): void
     {
