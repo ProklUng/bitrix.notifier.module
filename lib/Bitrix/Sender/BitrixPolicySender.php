@@ -6,8 +6,8 @@ use Bitrix\Main\ArgumentException;
 use Bitrix\Main\ObjectPropertyException;
 use Bitrix\Main\SystemException;
 use Proklung\Notifier\Bitrix\EventBridgeMail;
+use Proklung\Notifier\Bitrix\Notifier\BitrixNotification;
 use Proklung\Notifier\Bitrix\Utils\EventTableUpdater;
-use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
 
@@ -69,7 +69,7 @@ class BitrixPolicySender
         foreach ($eventsInfo as $eventInfo) {
             $compileData = $this->eventBridge->compileMessage($eventInfo, $arFields, ['s1']);
 
-            $notification = (new Notification($compileData['subject']))
+            $notification = (new BitrixNotification($compileData['subject']))
                 ->content($compileData['body'])
                 ->importance($importance);
 

@@ -206,6 +206,16 @@ return [
 
 ### Отправка битриксового события согласно channel_policy
 
+При условии `channel_policy` в `/bitrix/,settings.php`:
+
+```php
+                'channel_policy' => [
+                    //...
+                    'medium' => ['email', 'chat/telegram'],
+                    //...
+                ],
+``` 
+
 ```php
         use Proklung\Notifier\Bitrix\Sender\BitrixPolicySender;
         use Symfony\Component\Notifier\Notification\Notification;;
@@ -219,7 +229,7 @@ return [
         // См. https://dev.1c-bitrix.ru/api_help/main/reference/cevent/send.php 
         $arFields = ['NAME' => 'testing email', 'EMAIL' => 'recipitient@gmail.com'];
 
-        // Будет оправлено сообщение в канал email и сделана запись в таблице b_event.
+        // Будет оправлено сообщение в канал email и telegram, а также сделана запись в таблице b_event.
         $bitrixEventHandler->send('CODE_MAIL_EVENT', $arFields, Notification::IMPORTANCE_MEDIUM);
 ```
 
