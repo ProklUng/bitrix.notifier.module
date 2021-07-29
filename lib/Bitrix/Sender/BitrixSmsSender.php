@@ -1,13 +1,13 @@
 <?php
 
-namespace Proklung\Notifier\Bitrix;
+namespace Proklung\Notifier\Bitrix\Sender;
 
 use Bitrix\Main\ArgumentException;
-use Bitrix\Main\Mail\Internal\EventTable;
 use Bitrix\Main\ObjectPropertyException;
 use Bitrix\Main\SystemException;
-use Bitrix\Main\Type\DateTime;
 use Exception;
+use Proklung\Notifier\Bitrix\EventBridgeSms;
+use Proklung\Notifier\Bitrix\Utils\EventTableUpdater;
 use RuntimeException;
 use Symfony\Component\Notifier\Exception\TransportExceptionInterface;
 use Symfony\Component\Notifier\Message\SmsMessage;
@@ -15,7 +15,7 @@ use Symfony\Component\Notifier\TexterInterface;
 
 /**
  * Class BitrixSmsSender
- * @package Proklung\Notifier\Bitrix
+ * @package Proklung\Notifier\Bitrix\Sender
  *
  * @since 28.07.2021
  */
@@ -89,22 +89,8 @@ class BitrixSmsSender
         }
 
         // Эмуляция поведения Битрикса при обработке событий.
-        try {
-            EventTable::add(
-                [
-                    'EVENT_NAME' => $codeEvent,
-                    'SUCCESS_EXEC' => $success,
-                    'MESSAGE_ID' => 99999, // Признак, что отправлено через Notifier
-                    'DUPLICATE' => 'N',
-                    'LID' => SITE_ID,
-                    'LANGUAGE_ID' => LANGUAGE_ID,
-                    'DATE_INSERT' => new DateTime,
-                    'DATE_EXEC' => new DateTime,
-                    'C_FIELDS' => $success === 'N' ? ['error' => $errorMessage] : ['data' => $sentMessage->getMessageId()],
-                ]
-            );
-        } catch (Exception $e) {
-            // Silence. Не самый важный момент.
-        }
+        $fields = $success === 'N' ? ['error' => $errorMessage] : ['data' => $sentMessage->getMessageId()];
+
+        EventTableUpdater::create($codeEvent, $fields, 99999, $success);
     }
 }

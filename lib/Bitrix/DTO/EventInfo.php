@@ -1,11 +1,11 @@
 <?php
 
-namespace Proklung\Notifier\Bitrix;
+namespace Proklung\Notifier\Bitrix\DTO;
 
 /**
  * Class EventInfo
  * DTO с информацией о шаблоне битриксового события.
- * @package Proklung\Notifier\Bitrix
+ * @package Proklung\Notifier\Bitrix\DTO
  *
  * @since 28.07.2021
  */

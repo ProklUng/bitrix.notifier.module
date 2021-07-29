@@ -188,8 +188,7 @@ return [
 ### Использование битриксовых почтовых событий и их шаблонов
 
 ```php
-        use Proklung\Notifier\Bitrix\BitrixMailEventSender;
-        use Symfony\Component\Notifier\Notification\Notification;
+        use Proklung\Notifier\Bitrix\Sender\BitrixMailEventSender;
 
         $bitrixEventHandler = BitrixMailEventSender::getInstance(
             \Proklung\Notifier\DI\Services::getInstance()->get('notifier')
@@ -208,7 +207,7 @@ return [
 ### Использование битриксовых SMS событий и их шаблонов
 
 ```php
-        use Proklung\Notifier\Bitrix\BitrixSmsSender;
+        use Proklung\Notifier\Bitrix\Sender\BitrixSmsSender;
 
         $bitrixEventHandler = BitrixSmsSender::getInstance(
             \Proklung\Notifier\DI\Services::getInstance()->get('texter')
@@ -230,7 +229,7 @@ return [
 ### Отправка битриксовых почтовых шаблонов в Телеграм
 
 ```php
-        use Proklung\Notifier\Bitrix\BitrixTelegramEventSender;
+        use Proklung\Notifier\Bitrix\Sender\BitrixTelegramEventSender;
 
         $bitrixEventHandler = BitrixTelegramEventSender::getInstance(
             \Proklung\Notifier\DI\Services::getInstance()->get('chatter')

@@ -8,14 +8,16 @@ use Bitrix\Main\Mail\Internal\EventMessageAttachmentTable;
 use Bitrix\Main\Mail\Internal\EventMessageTable;
 use Bitrix\Main\ObjectPropertyException;
 use Bitrix\Main\SystemException;
+use Proklung\Notifier\Bitrix\DTO\EventInfo;
+use RuntimeException;
 
 /**
- * Class EventBridge
+ * Class EventBridgeMail
  * @package Proklung\Notifier\Bitrix
  *
  * @since 28.07.2021
  */
-class EventBridge
+class EventBridgeMail
 {
     /**
      * Получить скомпилированный текст письма для события.
@@ -25,6 +27,8 @@ class EventBridge
      * @param array     $sites     ID сайтов.
      *
      * @return array
+     * @throws ArgumentException | ObjectPropertyException | SystemException Битриксовые ошибки.
+     * @throws RuntimeException                                              Когда событие не найдено.
      */
     public function compileMessage(EventInfo $eventInfo, array $context, array $sites = []) : array
     {
@@ -62,8 +66,8 @@ class EventBridge
         $messageDb = EventMessageTable::getList([
             'select' => ['ID'],
             'filter' => [
-                '=ACTIVE' => 'Y',
                 '=EVENT_NAME' => $codeEvent,
+                '=ACTIVE' => 'Y',
                 '=EVENT_MESSAGE_SITE.SITE_ID' => $arSites,
             ],
             'group' => ['ID']

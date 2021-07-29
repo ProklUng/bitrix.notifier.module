@@ -1,12 +1,12 @@
 <?php
 
-namespace Proklung\Notifier\Bitrix;
+namespace Proklung\Notifier\Bitrix\Sender;
 
 use Bitrix\Main\ArgumentException;
-use Bitrix\Main\Mail\Internal\EventTable;
 use Bitrix\Main\ObjectPropertyException;
 use Bitrix\Main\SystemException;
-use Exception;
+use Proklung\Notifier\Bitrix\EventBridgeMail;
+use Proklung\Notifier\Bitrix\Utils\EventTableUpdater;
 use RuntimeException;
 use Symfony\Component\Notifier\Bridge\Telegram\TelegramOptions;
 use Symfony\Component\Notifier\Bridge\Telegram\TelegramTransport;
@@ -23,7 +23,7 @@ use Symfony\Component\Notifier\Message\ChatMessage;
 class BitrixTelegramEventSender
 {
     /**
-     * @var EventBridge $eventBridge Обработка битриксовых данных события.
+     * @var EventBridgeMail $eventBridge Обработка битриксовых данных события.
      */
     private $eventBridge;
 
@@ -35,10 +35,10 @@ class BitrixTelegramEventSender
     /**
      * BitrixChatEventSender constructor.
      *
-     * @param EventBridge      $eventBridge Обработка битриксовых данных события.
+     * @param EventBridgeMail  $eventBridge Обработка битриксовых данных события.
      * @param ChatterInterface $notifier    Notifier.
      */
-    public function __construct(EventBridge $eventBridge, ChatterInterface $notifier)
+    public function __construct(EventBridgeMail $eventBridge, ChatterInterface $notifier)
     {
         $this->eventBridge = $eventBridge;
         $this->notifier = $notifier;
@@ -64,7 +64,7 @@ class BitrixTelegramEventSender
             );
         }
 
-        return new static(new EventBridge(), $notifier);
+        return new static(new EventBridgeMail(), $notifier);
     }
 
     /**
@@ -96,23 +96,7 @@ class BitrixTelegramEventSender
             $this->notifier->send($notification);
 
             // Эмуляция поведения Битрикса при обработке событий.
-            try {
-                EventTable::add(
-                    [
-                        'EVENT_NAME' => $eventInfo->getEventCode(),
-                        'SUCCESS_EXEC' => 'Y',
-                        'MESSAGE_ID' => 99999, // Признак, что отправлено через Notifier
-                        'DUPLICATE' => 'N',
-                        'LID' => SITE_ID,
-                        'LANGUAGE_ID' => LANGUAGE_ID,
-                        'DATE_INSERT' => new \Bitrix\Main\Type\DateTime,
-                        'DATE_EXEC' => new \Bitrix\Main\Type\DateTime,
-                        'C_FIELDS' => $eventInfo->getMessageData(),
-                    ]
-                );
-            } catch (Exception $e) {
-                // Silence. Не самый важный момент.
-            }
+            EventTableUpdater::create($eventInfo->getEventCode(), $eventInfo->getMessageData(), 99999);
         }
     }
 }
