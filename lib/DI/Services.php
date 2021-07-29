@@ -106,8 +106,10 @@ class Services extends AbstractServiceContainer
         static::$container->setParameter('mailer_enabled', false);
 
         $loader = new PhpFileLoader(static::$container, new FileLocator(__DIR__ . '/../../configs'));
+
         $loader->load('notifier.php');
         $loader->load('notifier_transports.php');
+        $loader->load('bitrix.php');
 
         $configManager = new \Proklung\Notifier\DI\Configuration(
             static::$container->getParameter('kernel.debug')
