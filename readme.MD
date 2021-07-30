@@ -193,6 +193,9 @@ return [
         $bitrixEventHandler = BitrixMailEventSender::getInstance(
             \Proklung\Notifier\DI\Services::getInstance()->get('notifier')
         );
+    
+        // Или так:
+        $bitrixEventHandler = \Proklung\Notifier\DI\Services::get('bitrix.notifier.mail');
 
         // Массив, идентичный с параметром fields при отправке Битриксом сообщений
         // См. https://dev.1c-bitrix.ru/api_help/main/reference/cevent/send.php 
@@ -224,6 +227,9 @@ return [
         $bitrixEventHandler = BitrixPolicySender::getInstance(
                     \Proklung\Notifier\DI\Services::getInstance()->get('notifier')
         );
+       
+        // Или так:
+        $bitrixEventHandler = \Proklung\Notifier\DI\Services::get('bitrix.notifier.policy');
 
         // Массив, идентичный с параметром fields при отправке Битриксом сообщений
         // См. https://dev.1c-bitrix.ru/api_help/main/reference/cevent/send.php 
@@ -241,6 +247,9 @@ return [
         $bitrixEventHandler = BitrixSmsSender::getInstance(
             \Proklung\Notifier\DI\Services::getInstance()->get('texter')
         );
+        
+        // Или так:
+        $bitrixEventHandler = \Proklung\Notifier\DI\Services::get('bitrix.notifier.sms');
 
         // Массив, идентичный с параметром fields при отправке Битриксом сообщений
         $arFields = [
@@ -263,6 +272,10 @@ return [
         $bitrixEventHandler = BitrixTelegramEventSender::getInstance(
             \Proklung\Notifier\DI\Services::getInstance()->get('chatter')
         );
+
+        // Или так:
+        $bitrixEventHandler = \Proklung\Notifier\DI\Services::get('bitrix.notifier.telegram');
+
 
         $arFields = ['CODE' => '2222', 'LINK' => 'http://site.loc/'];
 

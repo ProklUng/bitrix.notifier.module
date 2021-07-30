@@ -21,16 +21,28 @@ return static function (ContainerConfigurator $container) {
               ->args([service(EventBridgeMail::class), service('notifier')])
               ->public()
 
+              ->alias('bitrix.notifier.policy', BitrixPolicySender::class)
+              ->public()
+
               ->set(BitrixMailEventSender::class, BitrixMailEventSender::class)
               ->args([service(EventBridgeMail::class), service('notifier')])
+              ->public()
+
+              ->alias('bitrix.notifier.mail', BitrixMailEventSender::class)
               ->public()
 
               ->set(BitrixSmsSender::class, BitrixSmsSender::class)
               ->args([service(EventBridgeSms::class), service('texter')])
               ->public()
 
+              ->alias('bitrix.notifier.sms', BitrixSmsSender::class)
+              ->public()
+
               ->set(BitrixTelegramEventSender::class, BitrixTelegramEventSender::class)
               ->args([service(EventBridgeMail::class), service('chatter')])
+              ->public()
+
+              ->alias('bitrix.notifier.telegram', BitrixTelegramEventSender::class)
               ->public()
     ;
 };
