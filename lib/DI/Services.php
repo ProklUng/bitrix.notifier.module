@@ -360,6 +360,7 @@ class Services extends AbstractServiceContainer
         $container->setParameter('mailer_dsn', (string)$config['dsn']);
         $container->setParameter('mailer_default_email_from', (string)$config['default_email_from']);
         $container->setParameter('mailer_default_title', (string)$config['default_email_title']);
+        $container->setParameter('envelope', (array)$config['envelope']);
 
         $container->setParameter('mailer_enabled', true);
     }
