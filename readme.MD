@@ -147,6 +147,7 @@ return [
                       'enabled' => true,
                       'dsn' => 'gmail+smtp://robotivanov2020:izjqfjyegwmznrtb@default',
                       'envelope' => [
+                          // Получатель писем  
                           'recipients' => ['testing@mail.ru'],
                            // Поле from отправляемого письма 
                           'sender' => 'sender@gmail.com',  // Важный параметр, если иметь дело с почтой.
