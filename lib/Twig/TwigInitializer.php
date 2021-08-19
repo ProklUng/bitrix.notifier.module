@@ -127,7 +127,7 @@ class TwigInitializer
             $loader,
             [
                 'debug' => (bool)$debug,
-                'cache' => $cachePath,
+                'cache' => $cachePath ?: false,
             ]
         );
     }
