@@ -4,7 +4,6 @@ namespace Proklung\Notifier\Twig;
 
 use Twig\Environment;
 use Twig\Error\LoaderError;
-use Twig_Environment;
 use Twig\Loader\FilesystemLoader;
 
 /**
@@ -15,7 +14,7 @@ use Twig\Loader\FilesystemLoader;
 class TwigInitializer
 {
     /**
-     * @var Twig_Environment Twig.
+     * @var Environment Twig.
      */
     private $twigEnvironment;
 
@@ -116,15 +115,15 @@ class TwigInitializer
      * @param string           $debug     Среда.
      * @param string           $cachePath Путь к кэшу (серверный).
      *
-     * @return Twig_Environment
+     * @return Environment
      */
     private function initTwig(
         FilesystemLoader $loader,
         string $debug,
         string $cachePath
-    ) : Twig_Environment {
+    ) : Environment {
 
-        return new Twig_Environment(
+        return new Environment(
             $loader,
             [
                 'debug' => (bool)$debug,
