@@ -43,13 +43,13 @@ class TwigInitializer
      *
      * @param FilesystemLoader $loader      Загрузчик.
      * @param string           $debug       Среда.
-     * @param string           $cachePath   Путь к кэшу (серверный).
+     * @param string|null      $cachePath   Путь к кэшу (серверный).
      * @param array|null       $twigOptions Опции Твига.
      */
     public function __construct(
         FilesystemLoader $loader,
         string $debug,
-        string $cachePath,
+        ?string $cachePath,
         ?array $twigOptions = null
     ) {
         $this->loader = $loader;
@@ -113,14 +113,14 @@ class TwigInitializer
      *
      * @param FilesystemLoader $loader    Загрузчик.
      * @param string           $debug     Среда.
-     * @param string           $cachePath Путь к кэшу (серверный).
+     * @param string|null      $cachePath Путь к кэшу (серверный).
      *
      * @return Environment
      */
     private function initTwig(
         FilesystemLoader $loader,
         string $debug,
-        string $cachePath
+        ?string $cachePath
     ) : Environment {
 
         return new Environment(
