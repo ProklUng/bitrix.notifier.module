@@ -100,9 +100,6 @@ class Services extends AbstractServiceContainer
      */
     public function initContainer() : void
     {
-        static::$container->setParameter('kernel.debug', $_ENV['DEBUG'] ?? true);
-        static::$container->setParameter('kernel.project_dir', $_SERVER['DOCUMENT_ROOT']);
-        static::$container->setParameter('kernel.cache_dir', $_SERVER['DOCUMENT_ROOT'] . '/bitrix/cache');
         static::$container->setParameter('mailer_enabled', false);
 
         $loader = new PhpFileLoader(static::$container, new FileLocator(__DIR__ . '/../../configs'));
